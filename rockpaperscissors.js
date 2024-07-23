@@ -17,6 +17,9 @@ section.appendChild(scissorsBtn);
 
 document.body.appendChild(section);
 
+const resultsSection = document.createElement("div");
+document.body.appendChild(resultsSection);
+
 rockBtn.addEventListener("click", ()=> {
     playRound(0, getComputerChoice());
 });
@@ -33,65 +36,52 @@ function getComputerChoice() {
     return random(playOptions);
 }
 
-/**function getHumanChoice() {
-    let choice = prompt(
-    "Make a choice! \n" +
-    "0 - Rock \n" + 
-    "1 - Paper \n" +
-    "2 - Scissors \n" +
-    "What do you want to play?");
-
-    let userChoice = random(playOptions);
-
-    if(isNaN(choice) || (Number(choice) != 0 && Number(choice) != 1 && Number(choice) != 2))
-        console.log("This is not a valid choice! Randomly choosing for you!");
-    else{
-        userChoice = Number(choice);
-    }
-
-    return userChoice;f
-}**/
-
 function random(options) {
     return Math.floor(Math.random() * (0,options.length));
 }
 
+const humanChoiceText = document.createElement("p");
+const computerChoiceText = document.createElement("p");
+const resultText = document.createElement("p");
+const tallyText = document.createElement("p");
+const winnerText = document.createElement("p");
+
+resultsSection.appendChild(humanChoiceText);
+resultsSection.appendChild(computerChoiceText);
+resultsSection.appendChild(resultText);
+
 function playRound(humanChoice, computerChoice){
 
-    console.log("Human chooses: " + playOptions[humanChoice]);
-    console.log("Computer chooses: " + playOptions[computerChoice]);
+    humanChoiceText.textContent = "Human: " + playOptions[humanChoice];
+    computerChoiceText.textContent = "Computer: " + playOptions[computerChoice];
 
-    if(humanChoice === computerChoice){
-        console.log("It's a draw!");
-    }else if(((humanChoice + 2) % 3) === ((computerChoice + 1) % 3)){
-        console.log(`Computer wins beacause ${playOptions[computerChoice]} beats ${playOptions[humanChoice]}`);
-        computerScore++;
-    }
-    else{
-        console.log(`You win beacause ${playOptions[humanChoice]} beats ${playOptions[computerChoice]}`);
-        humanScore++;
-    }
-}
+    calculateWinner(humanChoice, computerChoice);
 
-function playGame(){
-    const MAX_GAMES = 5;
-    let humanSelection;
-    let computerSelection;
-
-    for(let i=0; i< MAX_GAMES; i++){
-        console.log(`Round ${i + 1}: `)
-        humanSelection = getHumanChoice();
-        computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
-
-    if(humanScore === computerScore)
-        console.log("It was a draw!");
-    else if(humanScore > computerScore){
-        console.log(`You beat the computer ${humanScore} to their ${computerScore}!`);
+    if(humanScore === 5 || computerScore === 5){
+        if(humanScore === computerScore)
+            resultText.textContent = `It was a draw! Human: ${humanScore} | Computer: ${computerScore}`;
+        else if(humanScore > computerScore){
+            resultText.textContent = `Human beat the computer! Human: ${humanScore} | Computer: ${computerScore}`;
+        }else{
+            resultText.textContent = `Sorry the computer beat the human! Human: ${humanScore} | Computer: ${computerScore}`;
+        }
+        //reset the game
+        humanScore = 0;
+        computerScore = 0;
     }else{
-        console.log(`Sorry the computer beat you ${computerScore} to your ${humanScore}!`);
+        resultText.textContent = `Human: ${humanScore} | Computer: ${computerScore}`;
     }
 }
 
-//playGame();
+function calculateWinner(humanChoice, computerChoice){
+   
+    if(humanChoice != computerChoice){
+        if(((humanChoice + 2) % 3) === ((computerChoice + 1) % 3)){
+            computerScore++;
+        }
+        else{
+            humanScore++;
+        }
+    }
+}
+
