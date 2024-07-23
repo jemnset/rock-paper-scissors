@@ -2,11 +2,38 @@ let playOptions = ["rock", "paper", "scissors"];
 let humanScore = 0;
 let computerScore = 0;
 
+const section = document.createElement("div");
+const rockBtn = document.createElement("button");
+const paperBtn = document.createElement("button");
+const scissorsBtn = document.createElement("button");
+
+rockBtn.textContent = "Rock";
+paperBtn.textContent = "Paper";
+scissorsBtn.textContent = "Scissors";
+
+section.appendChild(rockBtn);
+section.appendChild(paperBtn);
+section.appendChild(scissorsBtn);
+
+document.body.appendChild(section);
+
+rockBtn.addEventListener("click", ()=> {
+    playRound(0, getComputerChoice());
+});
+
+paperBtn.addEventListener("click", ()=> {
+    playRound(1, getComputerChoice());
+});
+
+scissorsBtn.addEventListener("click", ()=> {
+    playRound(2, getComputerChoice());
+});
+
 function getComputerChoice() {
     return random(playOptions);
 }
 
-function getHumanChoice() {
+/**function getHumanChoice() {
     let choice = prompt(
     "Make a choice! \n" +
     "0 - Rock \n" + 
@@ -23,7 +50,7 @@ function getHumanChoice() {
     }
 
     return userChoice;f
-}
+}**/
 
 function random(options) {
     return Math.floor(Math.random() * (0,options.length));
@@ -67,4 +94,4 @@ function playGame(){
     }
 }
 
-playGame();
+//playGame();
